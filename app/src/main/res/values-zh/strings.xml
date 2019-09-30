@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Lab3</string>
+    <string name="app_name">Lab4</string>
     <string name="hello_message">你好 世界!</string>
     <string name="ButtonText">我是一个按钮</string>
     <string name="text_message">请看我的页面</string>
@@ -19,4 +19,7 @@
     <string name="text_message10">点击按钮上传照片</string>
     <string name="text_message11">请输入你的姓名</string>
     <string name="text_message12">请输入你的电子邮箱</string>
+    <string name="text_go_to_chat">点击进入聊天页面</string>
+    <string name="Button_send">发送</string>
+    <string name="Button_receive">接受</string>
 </resources>

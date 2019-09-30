@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         edit.putString(email_address, input_text1.getText().toString());
         edit.commit();
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

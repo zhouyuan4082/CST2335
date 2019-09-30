@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.content.Context;
@@ -36,14 +37,23 @@ public class ProfileActivity extends AppCompatActivity {
         EditText input_text2 = (EditText)findViewById(R.id.input_text2);
         input_text2.setText(prefs.getString("email", ""));
         imageButton1 = findViewById(R.id.imageButton1);
-        if(imageButton1 != null)
+        if(imageButton1 != null) {
             imageButton1.setOnClickListener(v -> {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
             });
+        }
         Log.e(ACTIVITY_NAME, "In function:" + "onCreate()");
+
+        Button gotochat_Button = findViewById(R.id.go_to_chat_button);
+        if(gotochat_Button != null) {
+            gotochat_Button.setOnClickListener(v -> {
+                Intent goToPage3 = new Intent(ProfileActivity.this, ChatRoomActivity.class);
+                startActivity(goToPage3);
+            });
+        }
     }
 
     @Override

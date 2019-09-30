@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab3</string>
+    <string name="app_name">Lab4</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\’m a button</string>
     <string name="text_message">Look at my GUI</string>
@@ -18,4 +18,7 @@
     <string name="text_message10">Click the button above to take a picture</string>
     <string name="text_message11">Enter your name</string>
     <string name="text_message12">Enter your email</string>
+    <string name="text_go_to_chat">Go to chat</string>
+    <string name="Button_send">SEND</string>
+    <string name="Button_receive">RECEIVE</string>
 </resources>
