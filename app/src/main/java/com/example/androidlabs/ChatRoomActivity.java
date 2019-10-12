@@ -51,14 +51,14 @@ public class ChatRoomActivity extends AppCompatActivity {
         //find the column index
         int nameColIndex = result.getColumnIndex(COL_MESSAGE);
         int idConInex = result.getColumnIndex(COL_ID);
-        int isSendConIndex = result.getColumnIndex(COL_ISSEND);
+        int isSentConIndex = result.getColumnIndex(COL_ISSEND);
 
         //iterate over the results, return true if there is a next item;
         while (result.moveToNext()){
             String name = result.getString(nameColIndex);
             long id = result.getLong(idConInex);
-            boolean isSend = result.getInt(isSendConIndex)>0;
-            objects.add(new Message(name, isSend, id));
+            boolean isSent = result.getInt(isSentConIndex)>0;
+            objects.add(new Message(name, isSent, id));
         }
         Button receiveButton = findViewById(R.id.receiveButton);
         receiveButton.setOnClickListener( clik -> {
@@ -144,7 +144,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             while (!result.isAfterLast()) {
 
                 Log.e("id", result.getString(result.getColumnIndex(COL_ID)) + "");
-                Log.e("isSend", result.getString(result.getColumnIndex(COL_ISSEND)) + "");
+                Log.e("isSent", result.getString(result.getColumnIndex(COL_ISSEND)) + "");
                 Log.e("message", result.getString(result.getColumnIndex(COL_MESSAGE)) + "");
 
                 result.moveToNext();
