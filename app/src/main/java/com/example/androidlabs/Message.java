@@ -6,8 +6,10 @@ public class Message extends AppCompatActivity {
 
     public String msg;
     public boolean sendOrReceive;//0 send, 1 receive
-    public Message(String msgContent, boolean seOrRe) {
+    public long id;
+    public Message(String msgContent, boolean seOrRe , long id) {
         msg = msgContent;
         sendOrReceive = seOrRe;
+        this.id = id;
     }
 }

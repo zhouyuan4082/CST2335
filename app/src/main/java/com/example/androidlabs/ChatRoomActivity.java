@@ -1,27 +1,33 @@
 package com.example.androidlabs;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.example.androidlabs.MyDatabaseOpenHelper.*;
+
 public class ChatRoomActivity extends AppCompatActivity {
 
     ArrayList<Message> objects = new ArrayList<>();
 
     BaseAdapter myAdapter;
+    SQLiteDatabase db;
+    Cursor result;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,24 +39,56 @@ public class ChatRoomActivity extends AppCompatActivity {
         theList.setOnItemClickListener( ( parent,  view,  position,  id) ->{
             Log.i("CLicked", "You clicked item:" + position);
         });
+//get a database
+        MyDatabaseOpenHelper dbOpener= new MyDatabaseOpenHelper(this);
+        db = dbOpener.getWritableDatabase();
+        //db.execSQL("delete from "+ TABLE_NAME);
+        //query all the results from the database
+        String[] colums = {COL_ID, COL_MESSAGE, COL_ISSEND};
+        result = db.query(false, TABLE_NAME, colums,
+                null,null,null, null,null,null);
 
+        //find the column index
+        int nameColIndex = result.getColumnIndex(COL_MESSAGE);
+        int idConInex = result.getColumnIndex(COL_ID);
+        int isSendConIndex = result.getColumnIndex(COL_ISSEND);
+
+        //iterate over the results, return true if there is a next item;
+        while (result.moveToNext()){
+            String name = result.getString(nameColIndex);
+            long id = result.getLong(idConInex);
+            boolean isSend = result.getInt(isSendConIndex)>0;
+            objects.add(new Message(name, isSend, id));
+        }
         Button receiveButton = findViewById(R.id.receiveButton);
         receiveButton.setOnClickListener( clik -> {
             TextView msgText = findViewById(R.id.msgInputtext);
-            Message message = new Message(msgText.getText().toString(),true);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_MESSAGE , msgText.getText().toString());
+            contentValues.put(COL_ISSEND, true);
+            long newId = db.insert(TABLE_NAME,null,contentValues);
+            Message message = new Message(msgText.getText().toString(),true, newId);
+            this.printCursor();
             objects.add(message);
-            msgText.setText("");
             myAdapter.notifyDataSetChanged(); //update yourself
+            msgText.setText("");
         } );
 
         Button sendButton = findViewById(R.id.sendButton);
         sendButton.setOnClickListener( clik -> {
             TextView msgText = findViewById(R.id.msgInputtext);
-            Message message = new Message(msgText.getText().toString(),false);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_MESSAGE , msgText.getText().toString());
+            contentValues.put(COL_ISSEND, false);
+            long newId = db.insert(TABLE_NAME,null,contentValues);
+            Message message = new Message(msgText.getText().toString(),false,newId);
+            this.printCursor();
             objects.add(message);
-            msgText.setText("");
             myAdapter.notifyDataSetChanged(); //update yourself
+            msgText.setText("");
         } );
+
+
     }
 
     private class MyListAdapter extends BaseAdapter {
@@ -77,9 +115,40 @@ public class ChatRoomActivity extends AppCompatActivity {
                     TextView itemField = thisRow.findViewById(R.id.sendTextView);
                     itemField.setText(getItem(p).msg);
                 }
+            } else {
+                if (getItem(p).sendOrReceive) {
+                    thisRow = inflater.inflate(R.layout.receive_message, null);
+                    TextView itemField = thisRow.findViewById(R.id.receiveTextView);
+                    itemField.setText(getItem(p).msg);
+                } else {
+                    thisRow = inflater.inflate(R.layout.send_message, null);
+                    TextView itemField = thisRow.findViewById(R.id.sendTextView);
+                    itemField.setText(getItem(p).msg);
+                }
             }
             return thisRow;
         }
     }
 
+    public void printCursor() {
+        Log.e("MyDatabaseFile version:", db.getVersion() + "");
+        Log.e("Number of columns:", result.getColumnCount() + "");
+        Log.e("Name of the columns:", Arrays.toString(result.getColumnNames()));
+        Log.e("Number of results", result.getCount() + "");
+        Log.e("Each row of results :", "");
+        result.moveToFirst();
+
+        //find the column index
+
+        for (int i = 0; i < result.getCount(); i++) {
+            while (!result.isAfterLast()) {
+
+                Log.e("id", result.getString(result.getColumnIndex(COL_ID)) + "");
+                Log.e("isSend", result.getString(result.getColumnIndex(COL_ISSEND)) + "");
+                Log.e("message", result.getString(result.getColumnIndex(COL_MESSAGE)) + "");
+
+                result.moveToNext();
+            }
+        }
+    }
 }
