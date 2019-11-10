@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imageButton"
         android:hint="@string/text_message2"
+        android:gravity="center"
         android:inputType="textPersonName" />
 
 

@@ -10,16 +10,7 @@ import android.widget.EditText;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("lab3_android", Context.MODE_PRIVATE );
-        SharedPreferences.Editor edit = prefs.edit();
-        EditText input_text1 = findViewById(R.id.input_text1);
-        String email_address = "email";
-        edit.putString(email_address, input_text1.getText().toString());
-        edit.commit();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +25,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent goToPage2 = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(goToPage2);
             });
-
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("lab3_android", Context.MODE_PRIVATE );
+        SharedPreferences.Editor edit = prefs.edit();
+        EditText input_text1 = findViewById(R.id.input_text1);
+        String email_address = "email";
+        edit.putString(email_address, input_text1.getText().toString());
+        edit.commit();
+    }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab5</string>
+    <string name="app_name">Lab6</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\’m a button</string>
     <string name="text_message">Look at my GUI</string>
@@ -21,4 +21,7 @@
     <string name="text_go_to_chat">Go to chat</string>
     <string name="Button_send">SEND</string>
     <string name="Button_receive">RECEIVE</string>
+    <string name="Button_go_to_weatherForecast">Go to WeatherForecast</string>
+
+
 </resources>
