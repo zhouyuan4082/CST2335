@@ -81,7 +81,6 @@ public class WeatherForecast extends AppCompatActivity {
 
             String ret = null;
             String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=ottawa,ca&APPID=7e943c97096a9784391a981c4d878b22&mode=xml&units=metric";
-            String params = "q=ottawa,ca&APPID=7e943c97096a9784391a981c4d878b22&mode=xml&units=metric";
 
             try {       // Connect to the server:
                 URL url = new URL(weatherURL);
@@ -119,14 +118,14 @@ public class WeatherForecast extends AppCompatActivity {
                             {
                                 String iconName = xpp.getAttributeValue(null,"icon");
 
-                                Log.i(null, "Finding image " + iconName + ".png");
+                                Log.i("Finding Image", "Finding image " + iconName + ".png");
 
                                 if(fileExistance(iconName + ".png")){
                                     FileInputStream fis = null;
                                     try {fis = openFileInput(iconName + ".png");   }
                                     catch (FileNotFoundException e) {    e.printStackTrace();  }
                                     imageWeather = BitmapFactory.decodeStream(fis);
-                                    Log.i(null, "Found image " + iconName + ".png from local");
+                                    Log.i("Finding Image", "Found image " + iconName + ".png from local");
 
                                 }else {
                                     URL urlImage = new URL("http://openweathermap.org/img/w/" + iconName + ".png");
@@ -144,7 +143,7 @@ public class WeatherForecast extends AppCompatActivity {
                                     imageWeather.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
                                     outputStream.flush();
                                     outputStream.close();
-                                    Log.i(null, "Found image " + iconName + ".png from URL, and download it.");
+                                    Log.i("Finding Image", "Found image " + iconName + ".png from URL, and download it.");
                                 }
                                 publishProgress(100);
 
