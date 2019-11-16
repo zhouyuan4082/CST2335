@@ -64,6 +64,13 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
+        Button gotoToolbarPage_Button = findViewById(R.id.go_to_Toolbar_page);
+        if(gotoToolbarPage_Button != null) {
+            gotoToolbarPage_Button.setOnClickListener(v -> {
+                Intent goToPageToolbar = new Intent(ProfileActivity.this, TestToolbar.class);
+                startActivity(goToPageToolbar);
+            });
+        }
     }
 
     @Override

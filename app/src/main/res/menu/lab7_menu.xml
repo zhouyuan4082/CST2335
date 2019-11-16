@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.androidlabs.TestToolbar">
+
+
+    <item
+        android:id="@+id/skip_to_start"
+        android:icon="@drawable/skip_to_start"
+        android:title="@string/menu_title_skip_to_start"
+        android:orderInCategory="1"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/pause"
+        android:icon="@drawable/pause"
+        android:title="@string/menu_title_pause"
+        android:orderInCategory="2"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/fast_forward"
+        android:icon="@drawable/fast_forward"
+        android:title="@string/menu_title_fast_forward"
+        android:orderInCategory="3"
+        app:showAsAction="always"/>
+
+</menu>

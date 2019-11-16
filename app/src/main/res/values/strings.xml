@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab6</string>
+    <string name="app_name">Lab7</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\’m a button</string>
     <string name="text_message">Look at my GUI</string>
@@ -22,6 +22,10 @@
     <string name="Button_send">SEND</string>
     <string name="Button_receive">RECEIVE</string>
     <string name="Button_go_to_weatherForecast">Go to WeatherForecast</string>
+    <string name="Button_go_to_Toolbar_page">Go to Toolbar page</string>
 
+    <string name="menu_title_skip_to_start">Skip and go back to the start</string>
+    <string name="menu_title_pause">Paused</string>
+    <string name="menu_title_fast_forward">Fast forward</string>
 
 </resources>
