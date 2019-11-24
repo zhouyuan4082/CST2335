@@ -1,6 +1,7 @@
 package com.example.androidlabs;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,22 +23,55 @@ import java.util.Arrays;
 import static com.example.androidlabs.MyDatabaseOpenHelper.*;
 
 public class ChatRoomActivity extends AppCompatActivity {
-
+    public static final String ITEM_SELECTED = "ITEM";
+    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_ID = "ID";
+    public static final String ITEM_SEND_RECEIVE = "SENDREC";
+    public static final int EMPTY_ACTIVITY = 345;
     ArrayList<Message> objects = new ArrayList<>();
 
     BaseAdapter myAdapter;
     SQLiteDatabase db;
     Cursor result;
+    ListView theList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
 
-        ListView theList = findViewById(R.id.theList);
+        theList = findViewById(R.id.theList);
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null;
         theList.setAdapter( myAdapter = new MyListAdapter() );
         theList.setOnItemClickListener( ( parent,  view,  position,  id) ->{
-            Log.i("CLicked", "You clicked item:" + position);
+
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString(ITEM_SELECTED,objects.get(position).msg /*source.get(position)*/ );
+            dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putLong(ITEM_ID, id);
+            if (objects.get(position).sendOrReceive) {
+                dataToPass.putString(ITEM_SEND_RECEIVE,"Receive");
+            } else {
+                dataToPass.putString(ITEM_SEND_RECEIVE,"Send");
+            }
+
+            if(isTablet)
+            {
+                DetailFragment dFragment = new DetailFragment(); //add a DetailFragment
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .addToBackStack("AnyName") //make the back button undo the transaction
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(ChatRoomActivity.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+            }
         });
 //get a database
         MyDatabaseOpenHelper dbOpener= new MyDatabaseOpenHelper(this);
@@ -91,7 +125,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     }
 
-    private class MyListAdapter extends BaseAdapter {
+    private class MyListAdapter extends BaseAdapter{
 
         public int getCount() {  return objects.size();  } //This function tells how many objects to show
 
@@ -150,5 +184,26 @@ public class ChatRoomActivity extends AppCompatActivity {
                 result.moveToNext();
             }
         }
+    }
+
+    //This function only gets called on the phone. The tablet never goes to a new activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EMPTY_ACTIVITY)
+        {
+            if(resultCode == RESULT_OK) //if you hit the delete button instead of back button
+            {
+                long id = data.getLongExtra(ITEM_ID, 0);
+                deleteMessageId((int)id);
+            }
+        }
+    }
+    public void deleteMessageId(int id)
+    {
+        Log.i("Delete this message:" , " id="+id);
+        objects.remove(id);
+        //source.remove(id);
+        myAdapter.notifyDataSetChanged();
     }
 }
